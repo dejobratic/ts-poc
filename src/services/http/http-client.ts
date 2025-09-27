@@ -1,6 +1,6 @@
 import axios from 'axios';
 import type { AxiosInstance, AxiosResponse } from 'axios';
-import type { HttpRequest, HttpResponse, HttpOptions } from './http-types';
+import type { HttpRequest, HttpResponse, HttpOptions } from '@/services/http';
 
 export class HttpClient {
   private readonly client: AxiosInstance;
@@ -20,8 +20,12 @@ export class HttpClient {
       data: request.body,
     });
 
+    return this.mapToHttpResponse(response);
+  }
+
+  private mapToHttpResponse<T>(response: AxiosResponse<T>): HttpResponse<T> {
     const isSuccessStatusCode = response.status >= 200 && response.status < 300;
-    
+
     return {
       status: response.status,
       statusText: response.statusText,
@@ -33,6 +37,6 @@ export class HttpClient {
           throw new Error(`HTTP Error ${response.status}: ${response.statusText}`);
         }
       },
-    };
+    }; 
   }
 }

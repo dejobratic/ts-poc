@@ -15,14 +15,7 @@ export class AuthorizationService {
   }
 
   async getToken(): Promise<AuthToken> {
-    const request: HttpRequest = {
-      url: `https://login.microsoftonline.com/${this.config.tenantId}/oauth2/v2.0/token`,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: this.buildTokenRequestBody(),
-    };
+    const request = this.createTokenRequest();
 
     const response = await this.httpClient.send<AADTokenResponse>(request);
     response.ensureSuccessStatusCode();
@@ -30,7 +23,18 @@ export class AuthorizationService {
     return this.mapToAuthToken(response.data);
   }
 
-  private buildTokenRequestBody(): string {
+  private createTokenRequest(): HttpRequest {
+    return {
+      url: `https://login.microsoftonline.com/${this.config.tenantId}/oauth2/v2.0/token`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: this.createTokenRequestBody(),
+    };
+  }
+
+  private createTokenRequestBody(): string {
     const params = new URLSearchParams({
       grant_type: 'client_credentials',
       client_id: this.config.clientId,
