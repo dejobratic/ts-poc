@@ -1,7 +1,7 @@
-import { HttpClient } from '../http';
-import type { HttpRequest } from '../http';
-import type { TimeProvider } from '../time/time-provider';
-import type { AuthConfig, AuthToken } from './auth-types';
+import { HttpClient } from '@/services/http';
+import type { HttpRequest } from '@/services/http';
+import type { TimeProvider } from '@/services/time/time-provider';
+import type { AuthConfig, AuthToken } from '@/services/auth/auth-types';
 
 export class AuthorizationService {
   private readonly httpClient: HttpClient;

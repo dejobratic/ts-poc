@@ -1,2 +1,2 @@
-export { AuthorizationService } from './authorization-service';
-export type { AuthConfig, AuthToken } from './auth-types';
+export { AuthorizationService } from '@/services/auth/authorization-service';
+export type { AuthConfig, AuthToken } from '@/services/auth/auth-types';

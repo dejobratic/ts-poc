@@ -1,10 +1,10 @@
-import { AuthorizationService } from './authorization-service';
-import type { AuthConfig } from './auth-types';
-import { HttpClient } from '../http';
-import type { HttpResponse } from '../http';
-import type { TimeProvider } from '../time/time-provider';
+import { AuthorizationService } from '@/services/auth/authorization-service';
+import type { AuthConfig } from '@/services/auth/auth-types';
+import { HttpClient } from '@/services/http';
+import type { HttpResponse } from '@/services/http';
+import type { TimeProvider } from '@/services/time/time-provider';
 
-jest.mock('../http', () => ({
+jest.mock('@/services/http', () => ({
   HttpClient: jest.fn().mockImplementation(() => ({
     send: jest.fn(),
   })),

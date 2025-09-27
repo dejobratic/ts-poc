@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { HttpClient } from './http-client';
-import type { HttpRequest } from './http-types';
+import { HttpClient } from '@/services/http/http-client';
+import type { HttpRequest } from '@/services/http/http-types';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;

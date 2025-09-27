@@ -1,4 +1,4 @@
-import { SystemTimeProvider } from './time-provider';
+import { SystemTimeProvider } from '@/services/time/time-provider';
 
 describe('SystemTimeProvider', () => {
   let timeProvider: SystemTimeProvider;

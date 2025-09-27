@@ -1,2 +1,2 @@
-export { HttpClient } from './http-client';
-export type { HttpRequest, HttpResponse, HttpOptions } from './http-types';
+export { HttpClient } from '@/services/http/http-client';
+export type { HttpRequest, HttpResponse, HttpOptions } from '@/services/http/http-types';

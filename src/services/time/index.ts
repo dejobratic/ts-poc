@@ -1,2 +1,2 @@
-export type { TimeProvider } from './time-provider';
-export { SystemTimeProvider } from './time-provider';
+export type { TimeProvider } from '@/services/time/time-provider';
+export { SystemTimeProvider } from '@/services/time/time-provider';
