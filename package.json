@@ -10,6 +10,8 @@
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format:imports": "eslint . --fix --rule '{\"import/order\": \"error\"}'",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -24,10 +26,13 @@
     "@testing-library/user-event": "^14.5.1",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
+    "@typescript-eslint/parser": "^8.44.1",
     "@vitejs/plugin-react": "^5.0.3",
     "@vitest/expect": "^3.2.4",
     "@vitest/ui": "^3.2.4",
     "eslint": "^9.36.0",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.4.0",

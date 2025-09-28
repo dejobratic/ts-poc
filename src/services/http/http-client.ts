@@ -1,5 +1,6 @@
 import axios from 'axios';
 import type { AxiosInstance, AxiosResponse } from 'axios';
+
 import type { HttpRequest, HttpResponse, HttpOptions } from '@/services/http';
 
 export class HttpClient {

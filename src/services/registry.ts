@@ -1,9 +1,9 @@
-import { ServiceContainer } from './container';
-import { HttpClient } from './http';
-import { SystemTimeProvider } from './time/time-provider';
-import { AuthorizationService } from './auth';
-import type { AuthConfig } from './auth';
-import type { TimeProvider } from './time/time-provider';
+import { AuthorizationService } from '@/services/auth';
+import type { AuthConfig } from '@/services/auth';
+import { ServiceContainer } from '@/services/container';
+import { HttpClient } from '@/services/http';
+import { SystemTimeProvider } from '@/services/time/time-provider';
+import type { TimeProvider } from '@/services/time/time-provider';
 
 // Single source of truth for service keys
 export const Services = {

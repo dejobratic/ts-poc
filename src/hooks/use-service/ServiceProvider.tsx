@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
-import { ServiceContext } from './ServiceContext';
+
+import { ServiceContext } from '@/hooks/use-service/ServiceContext';
 import type { ServiceContainer } from '@/services';
 
 interface ServiceProviderProps {
