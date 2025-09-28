@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
-import { configureServices } from '@/services/registry'
+import { configureServices } from '@/services'
 import { ServiceProvider } from '@/hooks/use-service'
 
 const container = configureServices();

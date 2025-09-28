@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { ServiceContext } from './ServiceContext';
-import type { ServiceContainer } from '@/services/container';
+import type { ServiceContainer } from '@/services';
 
 interface ServiceProviderProps {
   children: ReactNode;

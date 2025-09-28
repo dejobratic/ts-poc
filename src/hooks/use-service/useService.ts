@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { ServiceContext } from './ServiceContext';
-import type { ServiceMap } from '@/services/registry';
+import type { ServiceMap } from '@/services';
 
 export function useService<K extends keyof ServiceMap>(key: K): ServiceMap[K] {
   const serviceContainer = useContext(ServiceContext);
