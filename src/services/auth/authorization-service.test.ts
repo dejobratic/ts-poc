@@ -1,29 +1,30 @@
+import { vi } from 'vitest';
 import { AuthorizationService } from '@/services/auth/authorization-service';
 import type { AuthConfig } from '@/services/auth/auth-types';
 import { HttpClient } from '@/services/http';
 import type { HttpResponse } from '@/services/http';
 import type { TimeProvider } from '@/services/time/time-provider';
 
-jest.mock('@/services/http', () => ({
-  HttpClient: jest.fn().mockImplementation(() => ({
-    send: jest.fn(),
+vi.mock('@/services/http', () => ({
+  HttpClient: vi.fn().mockImplementation(() => ({
+    send: vi.fn(),
   })),
 }));
 
 describe('AuthorizationService', () => {
   let authService: AuthorizationService;
-  let mockHttpClient: jest.Mocked<HttpClient>;
-  let mockTimeProvider: jest.Mocked<TimeProvider>;
+  let mockHttpClient: HttpClient;
+  let mockTimeProvider: TimeProvider;
   let authConfig: AuthConfig;
 
   beforeEach(() => {
-    mockHttpClient = new HttpClient() as jest.Mocked<HttpClient>;
+    mockHttpClient = new HttpClient();
     
     mockTimeProvider = {
-      now: jest.fn(),
-      timestamp: jest.fn(),
-      addSeconds: jest.fn(),
-      addMinutes: jest.fn(),
+      now: vi.fn(),
+      timestamp: vi.fn(),
+      addSeconds: vi.fn(),
+      addMinutes: vi.fn(),
     };
 
     authConfig = {
@@ -37,7 +38,7 @@ describe('AuthorizationService', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('getToken', () => {
@@ -54,7 +55,7 @@ describe('AuthorizationService', () => {
         headers: { 'content-type': 'application/json' },
         data: mockAADResponse,
         isSuccessStatusCode: true,
-        ensureSuccessStatusCode: jest.fn(),
+        ensureSuccessStatusCode: vi.fn(),
       };
 
       const mockNow = new Date('2023-01-01T12:00:00Z');
@@ -94,7 +95,7 @@ describe('AuthorizationService', () => {
         headers: {},
         data: { error: 'invalid_client' },
         isSuccessStatusCode: false,
-        ensureSuccessStatusCode: jest.fn(() => {
+        ensureSuccessStatusCode: vi.fn(() => {
           throw new Error('HTTP Error 400: Bad Request');
         }),
       };
@@ -122,7 +123,7 @@ describe('AuthorizationService', () => {
         headers: {},
         data: mockAADResponse,
         isSuccessStatusCode: true,
-        ensureSuccessStatusCode: jest.fn(),
+        ensureSuccessStatusCode: vi.fn(),
       };
 
       mockTimeProvider.now.mockReturnValue(mockNow);

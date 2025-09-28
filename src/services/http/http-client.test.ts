@@ -1,9 +1,10 @@
+import { vi } from 'vitest';
 import axios from 'axios';
 import { HttpClient } from '@/services/http/http-client';
 import type { HttpRequest } from '@/services/http/http-types';
 
-jest.mock('axios');
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+vi.mock('axios');
+const mockedAxios = axios as typeof axios;
 
 describe('HttpClient', () => {
   let httpClient: HttpClient;
@@ -12,14 +13,14 @@ describe('HttpClient', () => {
 
   beforeEach(() => {
     mockAxiosInstance = {
-      request: jest.fn(),
+      request: vi.fn(),
     };
     mockedAxios.create.mockReturnValue(mockAxiosInstance);
     httpClient = new HttpClient({ baseUrl: 'https://api.example.com' });
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('send', () => {

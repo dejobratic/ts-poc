@@ -2,9 +2,15 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
+import { configureServices } from '@/services/registry'
+import { ServiceProvider } from '@/hooks/use-service'
+
+const container = configureServices();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <ServiceProvider container={container}>
+      <App />
+    </ServiceProvider>
   </StrictMode>,
 )
