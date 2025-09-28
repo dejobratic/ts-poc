@@ -21,10 +21,10 @@ export type ServiceMap = {
 
 function getAuthConfig(): AuthConfig {
   return {
-    tenantId: import.meta.env.VITE_TENANT_ID || '',
-    clientId: import.meta.env.VITE_CLIENT_ID || '',
-    clientSecret: import.meta.env.VITE_CLIENT_SECRET || '',
-    scope: import.meta.env.VITE_SCOPE || 'https://graph.microsoft.com/.default',
+    tenantId: import.meta.env.APP_TENANT_ID || '',
+    clientId: import.meta.env.APP_CLIENT_ID || '',
+    clientSecret: import.meta.env.APP_CLIENT_SECRET || '',
+    scope: import.meta.env.APP_SCOPE || 'https://graph.microsoft.com/.default',
   };
 }
 

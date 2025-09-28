@@ -398,6 +398,472 @@ export default defineConfig({
 
 ---
 
+## 🔧 Environment Variables & Configuration
+
+### Environment Variable Naming: APP_ vs VITE_ Prefix
+
+**✅ Chosen: APP_ Prefix**
+```bash
+# .env file
+APP_TENANT_ID=your-azure-tenant-id
+APP_CLIENT_ID=your-azure-client-id
+APP_CLIENT_SECRET=your-azure-client-secret
+APP_SCOPE=https://graph.microsoft.com/.default
+```
+
+**❌ Alternative Considered: VITE_ Prefix**
+```bash
+# Not used in this project
+VITE_TENANT_ID=your-azure-tenant-id
+VITE_CLIENT_ID=your-azure-client-id
+```
+
+**🎯 Why APP_ Prefix Was Chosen:**
+- **Framework-agnostic**: Not tied to Vite build tool
+- **Professional standard**: Used by many companies and enterprise projects
+- **Portable**: Easy to migrate between different build tools (Webpack, Rollup, etc.)
+- **Cleaner separation**: Build tool vs application configuration
+- **Future-proof**: Won't need changes if switching build systems
+
+**📚 Industry Evidence:**
+- **Create React App**: Uses `REACT_APP_` prefix (framework-specific)
+- **Next.js**: Supports custom prefixes over `NEXT_PUBLIC_`
+- **Enterprise**: Most companies use `APP_`, `API_`, or custom prefixes
+- **Best Practice**: Framework-agnostic naming is preferred for reusability
+
+### Environment Setup
+
+**1. Copy Environment Template:**
+```bash
+cp .env.example .env
+```
+
+**2. Configure Required Variables:**
+```bash
+# Authentication (Required)
+APP_TENANT_ID=your-azure-tenant-id-here
+APP_CLIENT_ID=your-azure-client-id-here
+APP_CLIENT_SECRET=your-azure-client-secret-here
+
+# API Configuration (Optional)
+APP_API_BASE_URL=https://api.example.com
+APP_API_TIMEOUT=10000
+
+# Development Settings
+APP_ENVIRONMENT=development
+APP_DEBUG_MODE=true
+```
+
+**3. Environment Validation:**
+Environment variables are validated at startup in `src/services/registry.ts`. Missing required variables will show helpful error messages.
+
+---
+
+## 🛠️ Development Experience
+
+### VS Code Configuration
+
+This project includes optimized VS Code settings for React TypeScript development:
+
+**📁 .vscode/settings.json:**
+- Auto-fix ESLint issues on save
+- Organize imports automatically
+- TypeScript path mapping support
+- File nesting for better organization
+- Optimized search and exclusion patterns
+
+**🔌 .vscode/extensions.json:**
+- Essential extensions for React + TypeScript
+- Code formatting and linting tools
+- Git integration and debugging support
+- Testing framework integration
+
+**🚀 Quick Setup:**
+1. Open project in VS Code
+2. Install recommended extensions (popup will appear)
+3. Settings are automatically applied
+4. Start coding with optimized developer experience
+
+### Debugging Configuration
+
+**React + Vite Debugging:**
+```json
+// .vscode/launch.json (optional)
+{
+  "type": "chrome",
+  "request": "launch",
+  "name": "Debug React App",
+  "url": "http://localhost:5173",
+  "webRoot": "${workspaceFolder}/src"
+}
+```
+
+---
+
+## 🚀 Production Readiness
+
+### Error Handling Patterns
+
+**Service-Level Error Handling:**
+```typescript
+// Example: Enhanced service with error handling
+export class HttpClient {
+  async get<T>(url: string): Promise<T> {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new HttpError(response.status, response.statusText);
+      }
+      return await response.json();
+    } catch (error) {
+      // Log error, transform, or handle gracefully
+      throw new ServiceError('HTTP request failed', error);
+    }
+  }
+}
+```
+
+**React Error Boundaries:**
+```typescript
+// Add error boundaries for service failures
+<ServiceProvider container={container}>
+  <ErrorBoundary fallback={<ErrorFallback />}>
+    <App />
+  </ErrorBoundary>
+</ServiceProvider>
+```
+
+### Security Considerations
+
+**Environment Variables:**
+- ✅ Never commit `.env` files to version control
+- ✅ Use different values for dev/staging/production
+- ✅ Store sensitive values in secure secret management
+- ✅ Validate required variables at startup
+
+**Service Configuration:**
+- ✅ Implement request/response interceptors for auth
+- ✅ Use HTTPS in production environments
+- ✅ Validate and sanitize all external inputs
+- ✅ Implement proper CORS configuration
+
+**Dependency Injection Security:**
+- ✅ Services are scoped and isolated
+- ✅ No global state that could leak data
+- ✅ Easy to mock services for testing
+
+### Performance Guidelines
+
+**Service Optimization:**
+- ✅ Services are singletons (created once)
+- ✅ Lazy loading can be added for heavy services
+- ✅ HTTP client includes proper timeout configuration
+- ✅ Time provider optimized for frequent calls
+
+**Bundle Optimization:**
+```typescript
+// Lazy load heavy services
+const HeavyService = React.lazy(() => import('@/services/heavy'));
+
+// Dynamic service registration
+if (featureFlag.enabled) {
+  container.register('OptionalService', new OptionalService());
+}
+```
+
+**Build Optimization:**
+- ✅ Vite provides automatic code splitting
+- ✅ Tree shaking eliminates unused service code
+- ✅ TypeScript path aliases optimize imports
+- ✅ ESLint import ordering improves parsing
+
+---
+
+## 🎓 Extending the System
+
+### Adding a New Service (Step-by-Step)
+
+**1. Create Service Domain Folder:**
+```bash
+mkdir src/services/notification
+```
+
+**2. Define Service Interface:**
+```typescript
+// src/services/notification/notification-types.ts
+export interface NotificationConfig {
+  apiKey: string;
+  endpoint: string;
+}
+
+export interface Notification {
+  id: string;
+  title: string;
+  message: string;
+  type: 'info' | 'warning' | 'error' | 'success';
+}
+```
+
+**3. Implement Service:**
+```typescript
+// src/services/notification/notification-service.ts
+export class NotificationService {
+  constructor(
+    private config: NotificationConfig,
+    private httpClient: HttpClient
+  ) {}
+
+  async send(notification: Omit<Notification, 'id'>): Promise<void> {
+    // Implementation
+  }
+}
+```
+
+**4. Add Tests:**
+```typescript
+// src/services/notification/notification-service.test.ts
+describe('NotificationService', () => {
+  it('should send notifications', () => {
+    // Test implementation
+  });
+});
+```
+
+**5. Create Barrel Export:**
+```typescript
+// src/services/notification/index.ts
+export { NotificationService } from './notification-service';
+export type { NotificationConfig, Notification } from './notification-types';
+```
+
+**6. Update Service Registry:**
+```typescript
+// src/services/registry.ts
+export const Services = {
+  // ... existing services
+  NotificationService: 'NotificationService',
+} as const;
+
+export type ServiceMap = {
+  // ... existing services
+  [Services.NotificationService]: NotificationService;
+};
+
+export function configureServices(): ServiceContainer {
+  // ... existing setup
+  const notificationConfig = getNotificationConfig();
+  const notificationService = new NotificationService(notificationConfig, httpClient);
+
+  serviceContainer.register(Services.NotificationService, notificationService);
+  return serviceContainer;
+}
+```
+
+**7. Use Service in Components:**
+```typescript
+// In any React component
+function MyComponent() {
+  const notificationService = useService(Services.NotificationService);
+
+  const handleClick = () => {
+    notificationService.send({
+      title: 'Success',
+      message: 'Operation completed',
+      type: 'success'
+    });
+  };
+}
+```
+
+### Common Service Patterns
+
+**Authentication Interceptor:**
+```typescript
+export class AuthenticatedHttpClient extends HttpClient {
+  constructor(private authService: AuthorizationService) {
+    super();
+  }
+
+  async request(config: RequestConfig) {
+    const token = await this.authService.getToken();
+    return super.request({
+      ...config,
+      headers: {
+        ...config.headers,
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
+}
+```
+
+**Caching Service:**
+```typescript
+export class CacheService {
+  private cache = new Map<string, { data: any; expires: number }>();
+
+  get<T>(key: string): T | null {
+    const item = this.cache.get(key);
+    if (!item || Date.now() > item.expires) {
+      this.cache.delete(key);
+      return null;
+    }
+    return item.data;
+  }
+
+  set<T>(key: string, data: T, ttl: number = 5000): void {
+    this.cache.set(key, { data, expires: Date.now() + ttl });
+  }
+}
+```
+
+### Testing Service Integration
+
+**Mock Services in Tests:**
+```typescript
+// test/setup.ts
+const mockContainer = new ServiceContainer();
+mockContainer.register(Services.HttpClient, createMockHttpClient());
+mockContainer.register(Services.AuthService, createMockAuthService());
+
+// Component test
+render(
+  <ServiceProvider container={mockContainer}>
+    <ComponentUnderTest />
+  </ServiceProvider>
+);
+```
+
+**Integration Testing:**
+```typescript
+describe('Service Integration', () => {
+  it('should integrate auth with http client', async () => {
+    const container = configureServices();
+    const authService = container.get<AuthorizationService>(Services.AuthService);
+    const httpClient = container.get<HttpClient>(Services.HttpClient);
+
+    // Test service interaction
+  });
+});
+```
+
+---
+
+## 🐛 Troubleshooting
+
+### Common Issues & Solutions
+
+**❌ Problem: "useService must be used within a ServiceProvider"**
+```typescript
+// ✅ Solution: Ensure ServiceProvider wraps your app
+function App() {
+  return (
+    <ServiceProvider container={container}>
+      <YourComponent /> {/* Now can use useService */}
+    </ServiceProvider>
+  );
+}
+```
+
+**❌ Problem: "Service 'ServiceName' not registered"**
+```typescript
+// ✅ Solution: Check service registration in registry.ts
+export function configureServices(): ServiceContainer {
+  const container = new ServiceContainer();
+
+  // Make sure this line exists:
+  container.register(Services.YourService, yourServiceInstance);
+
+  return container;
+}
+```
+
+**❌ Problem: Import path not resolved with @ alias**
+```typescript
+// ❌ Wrong
+import { useService } from '../../../hooks/use-service';
+
+// ✅ Correct
+import { useService } from '@/hooks/use-service';
+
+// Check vite.config.ts has:
+resolve: {
+  alias: {
+    '@': path.resolve(__dirname, 'src'),
+  },
+}
+```
+
+**❌ Problem: Environment variables not loading**
+```bash
+# ✅ Solution: Check file names and prefixes
+.env.example  # Template file
+.env          # Your actual values
+.env.local    # Local overrides
+
+# Make sure variables use APP_ prefix:
+APP_TENANT_ID=value  # ✅ Correct
+VITE_TENANT_ID=value # ❌ Won't work with current setup
+```
+
+**❌ Problem: ESLint import ordering not working**
+```bash
+# ✅ Solution: Run import fix command
+npm run lint:fix
+
+# Or configure auto-fix on save in VS Code settings.json:
+"editor.codeActionsOnSave": {
+  "source.fixAll.eslint": "explicit"
+}
+```
+
+**❌ Problem: Tests not finding services**
+```typescript
+// ✅ Solution: Provide test container
+const testContainer = new ServiceContainer();
+testContainer.register(Services.TestService, mockTestService);
+
+render(
+  <ServiceProvider container={testContainer}>
+    <TestComponent />
+  </ServiceProvider>
+);
+```
+
+### Debugging DI Context Issues
+
+**Service Resolution Debug:**
+```typescript
+// Add debugging to useService hook
+export function useService<K extends keyof ServiceMap>(key: K): ServiceMap[K] {
+  const container = useContext(ServiceContext);
+
+  if (!container) {
+    console.error('ServiceContext is null - check ServiceProvider wrapper');
+    throw new Error('useService must be used within a ServiceProvider');
+  }
+
+  if (!container.has(key)) {
+    console.error(`Service '${key}' not registered. Available services:`,
+      Object.keys(Services));
+    throw new Error(`Service '${key}' not registered`);
+  }
+
+  return container.get<ServiceMap[K]>(key);
+}
+```
+
+**Container State Inspection:**
+```typescript
+// Development helper
+if (process.env.NODE_ENV === 'development') {
+  (window as any).debugContainer = container;
+  console.log('Available services:', Object.keys(Services));
+}
+```
+
+---
+
 ## 🎮 Available Scripts
 
 ```bash
