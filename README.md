@@ -208,6 +208,56 @@ src/
 
 ---
 
+### Project Structure: Single App vs App Folder Pattern
+
+**❌ Alternative Considered: App Folder Structure**
+```
+project-root/
+├── app/
+│   ├── src/              ← Current src/ content moved here
+│   │   ├── hooks/
+│   │   ├── services/
+│   │   └── main.tsx
+│   ├── tests/            ← Vitest configuration isolated
+│   │   ├── vitest.config.ts
+│   │   ├── vitest.setup.ts
+│   │   └── vitest-env.d.ts
+│   ├── app.tsx           ← Main app component
+│   └── app.css           ← App-specific styles
+├── package.json
+└── other config files
+```
+
+**Benefits of App Folder Approach:**
+- **Logical grouping**: All application code contained in single folder
+- **Test isolation**: Separate tests directory with clear boundaries
+- **Future-ready**: Easier transition to monorepo if multiple apps needed
+- **Clean root**: Only project-wide configuration at root level
+
+**✅ Why Current Structure Was Chosen:**
+- **Industry Standard**: 99% of React projects use `src/` at root (Vite, CRA, standard)
+- **Tool Compatibility**: Seamless integration with all React tooling and IDEs
+- **Developer Expectations**: New developers instantly understand familiar structure
+- **Template Purpose**: As a POC template, should follow widely-adopted patterns
+- **Zero Configuration**: No need to reconfigure build tools, TypeScript, or ESLint
+- **YAGNI Compliance**: Not over-engineering for uncertain future monorepo needs
+
+**When App Folder Makes Sense:**
+- **Monorepo projects**: Multiple applications requiring clear separation (Turborepo, Nx)
+- **Multiple related apps**: When you're definitely building several applications
+- **Team preference**: Strong organizational requirements for strict app boundaries
+- **Enterprise patterns**: Large teams with complex application portfolios
+
+**📚 Industry Evidence:**
+- **Standard React**: Vite, Create React App, 99% of React projects use `src/` at root
+- **Monorepo Tools**: Turborepo uses `apps/app-name/src/` for multiple applications
+- **Next.js**: Uses `app/` for routing, not for organizing source code
+- **Framework consensus**: React ecosystem has standardized on root-level `src/`
+
+**🎯 Decision Outcome:** Current structure maintains industry standards while being immediately familiar to React developers, making it ideal for a template that others will use as a starting point.
+
+---
+
 ### Barrel Exports: index.ts Pattern
 
 **✅ Chosen: Comprehensive Barrel Exports**
