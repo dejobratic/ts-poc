@@ -13,6 +13,26 @@ This POC demonstrates how to implement clean, type-safe dependency injection in 
 - Industry-standard file organization and naming conventions
 - Automated code quality and import management
 
+## 📚 Table of Contents
+
+### 🚀 Quick Start
+- [🎮 Available Scripts](#-available-scripts) • [🚀 Getting Started](#-getting-started) • [🛠️ VS Code Setup](#-development-experience)
+
+### 🏗️ Architecture & Design Decisions
+- [⚛️ Technology Stack](#️-technology-stack--architectural-decisions) • [🎯 DI with React Context](#dependency-injection-react-context-not-global-singletons) • [📁 File Organization](#-file-organization--naming-conventions)
+
+### 💻 Development Experience
+- [🔧 Environment Variables](#-environment-variables--configuration) • [🎨 Code Quality & ESLint](#-code-quality--developer-experience) • [🧪 Testing Strategy](#-testing-strategy)
+
+### 🚀 Production Ready
+- [🛡️ Security & Error Handling](#-production-readiness) • [⚡ Performance Guidelines](#performance-guidelines) • [🔍 Debugging & Troubleshooting](#-troubleshooting)
+
+### 🎓 Extending the System
+- [➕ Adding New Services](#-extending-the-system) • [🔄 Common Patterns](#common-service-patterns) • [🧪 Testing Integration](#testing-service-integration)
+
+### 📖 Reference
+- [🏛️ Architecture Principles](#️-architecture-principles-applied) • [📚 Further Reading](#-references--further-reading) • [🎯 Key Takeaways](#-key-takeaways-for-future-projects)
+
 ---
 
 ## 🏗️ Technology Stack & Architectural Decisions
